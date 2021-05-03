@@ -1,7 +1,7 @@
 const mix = require('laravel-mix');
 
 mix.browserSync({
-	proxy: 'localhost/daydream',
+	proxy: 'localhost/some-wp-install',
 	files: [
 		'**/*.php',
 		'dist/css/**/*.css',
