@@ -11,10 +11,20 @@ Includes
 
 ## With browserSync
 
-1. Rename the project folder & "marie-wp-plugin-starter" entry file
-2. Find & replace "@package marie-wp-plugin-starter" with plugin name
-3. Find & replace all 'MariePluginStarter' with an appropiate namespace.
-4. Edit webpack.mix.js. Set proxy to wherever wp is running.
+1. Rename the project folder & 'marie-wp-plugin-starter' entry file
+
+3. Find & replace 'MariePluginStarter' with an appropiate namespace
+
+4. Find & replace functions prefixed with 'marie_wp_plugin_starter'
+
+5. Find & replace any 'marie-wp-plugin-starter'
+
+6. Edit webpack.mix.js. Set proxy to wherever WordPress is running
+
+7. Make sure src/js/name-of-your-script.js matches `mix.js()`  call in `webpack.mix.js` and `enqueue()` call in `YourPlugin\Base->Enqueue`
+
+8. Make sure src/scss/name-of-your-style.scss matches `mix.scss()` call in `webpack.mix.js` and is `name-of-your-css.css` in  `enqueue()` call in `YourPlugin\Base->Enqueue`
+
 
 ```js
 mix.browserSync({
