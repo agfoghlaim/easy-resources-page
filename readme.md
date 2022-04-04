@@ -21,11 +21,6 @@ Includes
 
 6. Edit webpack.mix.js. Set proxy to wherever WordPress is running
 
-7. Make sure src/js/name-of-your-script.js matches `mix.js()`  call in `webpack.mix.js` and `enqueue()` call in `YourPlugin\Base->Enqueue`
-
-8. Make sure src/scss/name-of-your-style.scss matches `mix.scss()` call in `webpack.mix.js` and is `name-of-your-css.css` in  `enqueue()` call in `YourPlugin\Base->Enqueue`
-
-
 ```js
 mix.browserSync({
   proxy: 'localhost/some-wp-install',
@@ -33,9 +28,15 @@ mix.browserSync({
 });
 ```
 
-5. `npm install` for laravel-mix & browserSync stuff.
-6. `composer install` for CodeSniffer and autoload.
-7. `npx mix watch`
+7. Make sure src/js/name-of-your-script.js matches `mix.js()`  call in `webpack.mix.js` and `enqueue()` call in `YourPlugin\Base->Enqueue`
+
+8. Make sure src/scss/name-of-your-style.scss matches `mix.scss()` call in `webpack.mix.js` and is `name-of-your-css.css` in  `enqueue()` call in `YourPlugin\Base->Enqueue`
+
+9. `npm install` for laravel-mix & browserSync stuff.
+
+10. `composer install` for CodeSniffer and autoload.
+
+11. `npx mix watch`
 
 Now the plugin can be activated. Client side js & css should be enqueued from dist folder.
 
