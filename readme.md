@@ -3,6 +3,7 @@
 My setup for creating a WordPress plugin (Windows, VS Code).
 
 Includes
+
 - Laravel Mix with browserSync
 - composer autoload
 - namespaces
@@ -13,30 +14,30 @@ Includes
 
 1. Rename the project folder & 'marie-wp-plugin-starter' entry file
 
-3. Find & replace 'MariePluginStarter' with an appropiate namespace
+2. Find & replace 'MariePluginStarter' with an appropiate namespace
 
-4. Find & replace functions prefixed with 'marie_wp_plugin_starter'
+3. Find & replace functions prefixed with 'marie_wp_plugin_starter'
 
-5. Find & replace any 'marie-wp-plugin-starter'
+4. Find & replace any 'marie-wp-plugin-starter'
 
-6. Edit webpack.mix.js. Set proxy to wherever WordPress is running
+5. Edit webpack.mix.js. Set proxy to wherever WordPress is running
 
 ```js
 mix.browserSync({
-  proxy: 'localhost/some-wp-install',
-  // ...
+	proxy: 'localhost/some-wp-install',
+	// ...
 });
 ```
 
-7. Make sure src/js/name-of-your-script.js matches `mix.js()`  call in `webpack.mix.js` and `enqueue()` call in `YourPlugin\Base->Enqueue`
+6. Make sure src/js/name-of-your-script.js matches `mix.js()` call in `webpack.mix.js` and `enqueue()` call in `YourPlugin\Base->Enqueue`
 
-8. Make sure src/scss/name-of-your-style.scss matches `mix.scss()` call in `webpack.mix.js` and is `name-of-your-css.css` in  `enqueue()` call in `YourPlugin\Base->Enqueue`
+7. Make sure src/scss/name-of-your-style.scss matches `mix.scss()` call in `webpack.mix.js` and is `name-of-your-css.css` in `enqueue()` call in `YourPlugin\Base->Enqueue`
 
-9. `npm install` for laravel-mix & browserSync stuff.
+8. `npm install` for laravel-mix & browserSync stuff.
 
-10. `composer install` for CodeSniffer and autoload.
+9. `composer install` for CodeSniffer and autoload.
 
-11. `npx mix watch`
+10. `npx mix watch`
 
 Now the plugin can be activated. Client side js & css should be enqueued from dist folder.
 
@@ -84,8 +85,6 @@ I keep mine in C:/Users/Me/wpcs and update them every so often. phpcs wants to k
 
 gives list of available standards and now should include WordPress...
 
-
-
 ## PHP Sniffer & Beautifer for VS Code.
 
 I originally used [phpcbf](https://github.com/soderlind/vscode-phpcbf) as the default formatter with these settings in vscode settings.json
@@ -103,9 +102,9 @@ I originally used [phpcbf](https://github.com/soderlind/vscode-phpcbf) as the de
 
 ```
 
-Using the `persoderlind.vscode-phpcbf` as default formatter technically worked but caused the progress bar at the top of vscode (.monaco-progress-container) to go back and over finitely until all tabs were closed. 
+Using the `persoderlind.vscode-phpcbf` as default formatter technically worked but caused the progress bar at the top of vscode (.monaco-progress-container) to go back and over finitely until all tabs were closed.
 
-[PHP Sniffer & Beautifier for VS Code](https://github.com/valeryan/vscode-phpsab) seems to work better. Here is the relevant part of settings.json. 
+[PHP Sniffer & Beautifier for VS Code](https://github.com/valeryan/vscode-phpsab) seems to work better. Here is the relevant part of settings.json.
 
 ```json
 "phpsab.snifferEnable" : false,
@@ -114,12 +113,13 @@ Using the `persoderlind.vscode-phpcbf` as default formatter technically worked b
 "phpsab.snifferShowSources": true,
 "phpsab.standard": "WordPress",
 "[php]": {
-    "editor.defaultFormatter": "valeryanm.vscode-phpsab",        
+    "editor.defaultFormatter": "valeryanm.vscode-phpsab",
 },
   "phpcs.standard": "Wordpress",
 ```
-* reload VS Code.
-* now shift+alt+f should format php files 
+
+- reload VS Code.
+- now shift+alt+f should format php files
 
 ## phpcs.xml
 
