@@ -18,6 +18,7 @@ class Enqueue {
 	 */
 	public function register() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin' ) );
 	}
 
 		/**
@@ -41,6 +42,14 @@ class Enqueue {
 	
 			wp_enqueue_script( 'easy-resources-page-main', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/js/easy-resources-page.js', null, '1.0.0', true );
 		}
+	}
+		/**
+		 * Enqueue admin
+		 */
+	public function enqueue_admin() {
+		
+		wp_enqueue_style( 'wp-color-picker' );
+    wp_enqueue_script( 'easy-resources-page-admin', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/js/easy-resources-page-admin.js', array( 'wp-color-picker' ), false, true );
 	}
 
 }

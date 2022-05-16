@@ -64,27 +64,31 @@ class Settings {
 	 */
 	public function deal_with_wp_settings_api_god_help_us() {
 
-		// 1. Register Settings.
+		// 1. Register.
 
-		// Button - background
+		// Button - background.
 		register_setting(
 			'erp_plugin_settings',
 			'erp-button-background',
 			'sanitize_hex_color'
 		);
+
+			// 2. Sections.
+
 		add_settings_section(
-			'buttons_section', // section id.
+			'buttons_section', // ***section id.
 			'Buttons Section', // section title.
 			array( $this, 'buttons_section_cb' ),
 			'erp_plugin' // page.
 		);
 
+		// 3. Fields.
 		add_settings_field(
-			'erp-button-background', // id;
+			'erp-button-background', // id.
 			'Button Background', // title.
 			array( $this, 'button_background_field_cb' ),
-			'erp_plugin', // page
-			'buttons_section' // section id
+			'erp_plugin', // page.
+			'buttons_section' // ***section id.
 		);
 
 	}
@@ -95,6 +99,7 @@ class Settings {
 	public function buttons_section_cb() {
 		echo 'Before buttons section';
 	}
+
 	/**
 	 * Buttons background field cb
 	 */
@@ -102,7 +107,7 @@ class Settings {
 
 		// TODO check this works first time if not defined.
 		$background_color = get_option( 'erp-button-background' );
-		echo '<input type="text" id="erp-button-background" name="erp-button-background" value="' . esc_attr( $background_color ) . '" />';
+		echo '<input class="erp-color-field" type="text" id="erp-button-background" name="erp-button-background" value="' . esc_attr( $background_color ) . '" />';
 	}
 
 }
