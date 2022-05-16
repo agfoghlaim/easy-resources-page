@@ -9,6 +9,7 @@
 <div class="wrap">
 
 	<h1><?php esc_html_e( 'Easy Resources Page', 'easy-resources-page' ); ?></h1>
+	<?php settings_errors(); ?>
 	<p><?php esc_html_e( 'Thank you for using Easy Resources Page!', 'easy-resources-page' ); ?></p>
 	
 	
@@ -43,4 +44,11 @@
 
 	<h2><?php esc_html_e( 'Settings', 'easy-resources-page' ); ?></h2>
 	<p><?php esc_html_e( 'By default the plugin will use your theme\'s default button styles for the accordions. You can also change things up by setting the colors below.', 'easy-resources-page' ); ?></p>
+
+	<form method="post" action="options.php">
+
+		<?php settings_fields( 'erp_plugin_settings' ); ?>
+		<?php do_settings_sections( 'erp_plugin' ); ?> 
+		<?php submit_button( 'Save Changes', 'primary', 'submit-settings' ); ?>
+	</form>
 </div>

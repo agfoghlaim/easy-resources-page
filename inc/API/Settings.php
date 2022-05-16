@@ -20,6 +20,7 @@ class Settings {
 
 		add_action( 'admin_menu', array( $this, 'handle_add_menu_page' ) );
 		add_filter( 'plugin_action_links_easy-resources-page/easy-resources-page.php', array( $this, 'add_settings_link' ) );
+		add_action( 'admin_init', array( $this, 'deal_with_wp_settings_api_god_help_us' ) );
 	}
 
 	/**
@@ -55,4 +56,53 @@ class Settings {
 		return $links;
 
 	}
+
+	/**
+	 * 1. Register settings (fields).
+	 * 2. Add sections.
+	 * 3. Add fields that correspond to the registered settings, assigned to sections.
+	 */
+	public function deal_with_wp_settings_api_god_help_us() {
+
+		// 1. Register Settings.
+
+		// Button - background
+		register_setting(
+			'erp_plugin_settings',
+			'erp-button-background',
+			'sanitize_hex_color'
+		);
+		add_settings_section(
+			'buttons_section', // section id.
+			'Buttons Section', // section title.
+			array( $this, 'buttons_section_cb' ),
+			'erp_plugin' // page.
+		);
+
+		add_settings_field(
+			'erp-button-background', // id;
+			'Button Background', // title.
+			array( $this, 'button_background_field_cb' ),
+			'erp_plugin', // page
+			'buttons_section' // section id
+		);
+
+	}
+
+	/**
+	 * Buttons section cb
+	 */
+	public function buttons_section_cb() {
+		echo 'Before buttons section';
+	}
+	/**
+	 * Buttons background field cb
+	 */
+	public function button_background_field_cb() {
+
+		// TODO check this works first time if not defined.
+		$background_color = get_option( 'erp-button-background' );
+		echo '<input type="text" id="erp-button-background" name="erp-button-background" value="' . esc_attr( $background_color ) . '" />';
+	}
+
 }
