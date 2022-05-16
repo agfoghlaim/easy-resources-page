@@ -21,11 +21,11 @@ class Enqueue {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin' ) );
 	}
 
-		/**
-		 * Enqueue js & css if the plugin template is currently loaded.
-		 */
+	/**
+	 * Enqueue js & css if the plugin template is currently loaded.
+	 */
 	public function enqueue() {
-		
+
 		global $post;
 
 		if ( ! $post ) {
@@ -39,17 +39,17 @@ class Enqueue {
 		if ( 'page-templates/resources-page.php' === $template_name ) {
 
 			wp_enqueue_style( 'easy-resources-page-style', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/css/easy-resources-page.css', array(), '1.0.0', 'all' );
-	
+
 			wp_enqueue_script( 'easy-resources-page-main', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/js/easy-resources-page.js', null, '1.0.0', true );
 		}
 	}
-		/**
-		 * Enqueue admin
-		 */
+
+	/**
+	 * Enqueue admin
+	 */
 	public function enqueue_admin() {
-		
 		wp_enqueue_style( 'wp-color-picker' );
-    wp_enqueue_script( 'easy-resources-page-admin', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/js/easy-resources-page-admin.js', array( 'wp-color-picker' ), false, true );
+		wp_enqueue_script( 'easy-resources-page-admin', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/js/easy-resources-page-admin.js', array( 'wp-color-picker' ), '1.0.0', true );
 	}
 
 }

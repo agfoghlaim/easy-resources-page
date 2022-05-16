@@ -33,9 +33,6 @@ if ( ! taxonomy_exists( 'erp_resource' ) ) {
 		echo '<section class="easy-resources-page-section-wrap" >';
 
 		if ( ! is_array( $the_terms ) || empty( $the_terms ) || is_wp_error( $the_terms ) ) {
-
-			// echo 'No resources to show.</section>';
-
 			return;
 		}
 
@@ -58,14 +55,13 @@ if ( ! taxonomy_exists( 'erp_resource' ) ) {
 
 			// Loop through the attachments with current term, render <div> with <h2>$the_term->name</h2> and list of relevant attachments.
 			if ( $attachments_with_this_term->have_posts() ) :
-	
 				?>
-
 				<div class="easy-resources-page-item item-<?php echo esc_html( $the_term->slug ); ?>">
-				
+			
 					<h2 class="easy-resources-page-title"> 
 
-						<button 
+						<button
+						style="<?php \EasyResourcesPage\Base\TemplateController::get_css( 'erp-button-background', 'background'); ?><?php \EasyResourcesPage\Base\TemplateController::get_css( 'erp-button-color', 'color'); ?>"
 						id="toggle-<?php echo esc_attr( $the_term->slug ); ?>"
 						class="showHideResourcesBtn" 
 						data-target-id="<?php echo esc_attr($the_term->slug ); ?>"
@@ -78,6 +74,7 @@ if ( ! taxonomy_exists( 'erp_resource' ) ) {
 					</h2>
 			
 					<div 
+					style="<?php echo \EasyResourcesPage\Base\TemplateController::get_css( 'erp-dropdown-background', 'background'); ?> "
 						class="easy-resources-page-panel" 
 						id="<?php echo esc_attr( $the_term->slug ); ?>" 
 						role="region"

@@ -79,5 +79,23 @@ class TemplateController {
 		return $template;
 	}
 
+	/**
+	 * Template helper. Echos eg. 'background:#ffffff' ($key:get_option($option))
+	 *
+	 * @param String $option Option from settings api.
+	 * @param String $key The css attribute to set.
+	 */
+	public static function get_css( $option, $key ) {
+		$attr = '';
+		$attr = get_option( $option );
+		if ( isset( $attr ) && '' !== $attr ) {
+			$attr = $key . ':' . esc_attr( $attr ) . ';';
+		}
+		if ( $attr ) {
+			echo esc_attr( $attr );
+		}
+		echo '';
+	}
+
 
 }

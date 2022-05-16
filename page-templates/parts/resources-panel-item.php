@@ -7,9 +7,11 @@
 
 ?>
 
-<div class="easy-resources-page-panel-item">
+<div 
+style="<?php \EasyResourcesPage\Base\TemplateController::get_css( 'erp-panel-background', 'background' ); ?> <?php \EasyResourcesPage\Base\TemplateController::get_css( 'erp-panel-color', 'color' ); ?>"
+class="easy-resources-page-panel-item">
 
-	<div>
+panel
 		<?php
 
 		// Get attachment file type (.pdf, .jpg etc).
@@ -26,7 +28,7 @@
 
 				// TODO.
 				// ( isset( $attachment_file_type ) ) &&
-				//easy_resources_page_svg( $attachment_file_type );
+				// easy_resources_page_svg( $attachment_file_type );
 				?>
 
 
@@ -53,10 +55,13 @@
 		// TODO: consts.
 		$previewable_file_types = array( 'pdf', 'jpg', 'jpeg', 'png', 'mp4' );
 
+		$link_class = esc_attr( get_option( 'erp-link-css-class' ) );
+
 	if ( in_array( $attachment_file_type, $previewable_file_types, true ) ) {
+
 		?>
 		<a 
-			class="easy-resources-page-default-btn" 
+			class="easy-resources-page-default-btn <?php echo isset( $link_class ) && '' !== $link_class ? esc_attr( $link_class ) : ''; ?>" 
 			title="View in new tab" 
 			href="<?php echo esc_url( $post->guid ); ?>" 
 			target="<?php echo esc_attr( '_blank' ); ?>">
@@ -67,7 +72,7 @@
 	}
 	?>
 		<a 
-			class="easy-resources-page-default-btn" 
+			class="easy-resources-page-default-btn <?php echo isset( $link_class ) && '' !== $link_class ? esc_attr( $link_class ) : ''; ?>" 
 			title="Download file" 
 			href="<?php echo esc_url( $post->guid ); ?>" 
 			download="<?php echo esc_html( $post->post_title ); ?>" >
@@ -76,5 +81,5 @@
 		</a>
 
 
-	</div> <!-- .easy-resources-page-btns-wrap-->
-</div><!-- .easy-resources-page-item-->
+	</div>
+</div>

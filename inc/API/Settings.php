@@ -58,23 +58,57 @@ class Settings {
 	}
 
 	/**
-	 * 1. Register settings (fields).
-	 * 2. Add sections.
-	 * 3. Add fields that correspond to the registered settings, assigned to sections.
+	 * Deal with wp settings api. This does 3 things.
+	 *
+	 * 1. Registers settings (for the fields).
+	 * 2. Adds sections ( Buttons, Dropdowns, Panels & Links).
+	 * 3. Adds fields that correspond to the registered settings, assigns them to sections.
 	 */
 	public function deal_with_wp_settings_api_god_help_us() {
 
 		// 1. Register.
 
-		// Button - background.
+		// Buttons.
 		register_setting(
 			'erp_plugin_settings',
 			'erp-button-background',
 			'sanitize_hex_color'
 		);
+		register_setting(
+			'erp_plugin_settings',
+			'erp-button-color',
+			'sanitize_hex_color'
+		);
 
-			// 2. Sections.
+		// Dropdowns.
+		register_setting(
+			'erp_plugin_settings',
+			'erp-dropdown-background',
+			'sanitize_hex_color'
+		);
 
+		// Panels.
+		register_setting(
+			'erp_plugin_settings',
+			'erp-panel-background',
+			'sanitize_hex_color'
+		);
+		register_setting(
+			'erp_plugin_settings',
+			'erp-panel-color',
+			'sanitize_hex_color'
+		);
+
+		// Links.
+		register_setting(
+			'erp_plugin_settings',
+			'erp-link-css-class',
+			'sanitize_text_field'
+		);
+
+		// 2. Sections.
+
+		// Buttons.
 		add_settings_section(
 			'buttons_section', // ***section id.
 			'Buttons Section', // section title.
@@ -82,7 +116,33 @@ class Settings {
 			'erp_plugin' // page.
 		);
 
+		// Dropdowns.
+		add_settings_section(
+			'dropdowns_section', // ***section id.
+			'Dropdowns Section', // section title.
+			array( $this, 'dropdowns_section_cb' ),
+			'erp_plugin' // page.
+		);
+
+		// Panels.
+		add_settings_section(
+			'panels_section', // ***section id.
+			'Panels Section', // section title.
+			array( $this, 'panels_section_cb' ),
+			'erp_plugin' // page.
+		);
+
+		// Links.
+		add_settings_section(
+			'links_section', // ***section id.
+			'Links Section', // section title.
+			array( $this, 'links_section_cb' ),
+			'erp_plugin' // page.
+		);
+
 		// 3. Fields.
+
+		// Buttons.
 		add_settings_field(
 			'erp-button-background', // id.
 			'Button Background', // title.
@@ -90,7 +150,47 @@ class Settings {
 			'erp_plugin', // page.
 			'buttons_section' // ***section id.
 		);
+		add_settings_field(
+			'erp-button-color', // id.
+			'Button Color', // title.
+			array( $this, 'button_color_field_cb' ),
+			'erp_plugin', // page.
+			'buttons_section' // ***section id.
+		);
 
+		// Dropdowns.
+		add_settings_field(
+			'erp-dropdown-background', // id.
+			'Dropdown Background', // title.
+			array( $this, 'dropdown_background_field_cb' ),
+			'erp_plugin', // page.
+			'dropdowns_section' // ***section id.
+		);
+
+			// Panels.
+			add_settings_field(
+				'erp-panel-background', // id.
+				'Panel Background', // title.
+				array( $this, 'panel_background_field_cb' ),
+				'erp_plugin', // page.
+				'panels_section' // ***section id.
+			);
+			add_settings_field(
+				'erp-panel-color', // id.
+				'Panel Color', // title.
+				array( $this, 'panel_color_field_cb' ),
+				'erp_plugin', // page.
+				'panels_section' // ***section id.
+			);
+
+			// Links.
+			add_settings_field(
+				'erp-link-css-class', // id.
+				'Link Class', // title.
+				array( $this, 'link_css_class_field_cb' ),
+				'erp_plugin', // page.
+				'links_section' // ***section id.
+			);
 	}
 
 	/**
@@ -99,15 +199,76 @@ class Settings {
 	public function buttons_section_cb() {
 		echo 'Before buttons section';
 	}
+	/**
+	 * Dropdowns section cb
+	 */
+	public function dropdowns_section_cb() {
+		echo 'Before dropdownss section';
+	}
+	/**
+	 * Panels section cb
+	 */
+	public function panels_section_cb() {
+		echo 'Before panels section';
+	}
+	/**
+	 * Links section cb
+	 */
+	public function links_section_cb() {
+		echo 'If you prefer to style the \'Preview\' and \'Download\' links as buttons, insert your theme\'s button classes here.';
+	}
 
 	/**
 	 * Buttons background field cb
 	 */
 	public function button_background_field_cb() {
-
 		// TODO check this works first time if not defined.
 		$background_color = get_option( 'erp-button-background' );
 		echo '<input class="erp-color-field" type="text" id="erp-button-background" name="erp-button-background" value="' . esc_attr( $background_color ) . '" />';
+	}
+
+	/**
+	 * Buttons color field cb
+	 */
+	public function button_color_field_cb() {
+		// TODO check this works first time if not defined.
+		$color = get_option( 'erp-button-color' );
+		echo '<input class="erp-color-field" type="text" id="erp-button-color" name="erp-button-color" value="' . esc_attr( $color ) . '" />';
+	}
+
+	/**
+	 * Dropdowns background field cb
+	 */
+	public function dropdown_background_field_cb() {
+		// TODO check this works first time if not defined.
+		$background_color = get_option( 'erp-dropdown-background' );
+		echo '<input class="erp-color-field" type="text" id="erp-dropdown-background" name="erp-dropdown-background" value="' . esc_attr( $background_color ) . '" />';
+	}
+
+	/**
+	 * Panels background field cb
+	 */
+	public function panel_background_field_cb() {
+		// TODO check this works first time if not defined.
+		$background_color = get_option( 'erp-panel-background' );
+		echo '<input class="erp-color-field" type="text" id="erp-panel-background" name="erp-panel-background" value="' . esc_attr( $background_color ) . '" />';
+	}
+
+	/**
+	 * Panels color field cb
+	 */
+	public function panel_color_field_cb() {
+		// TODO check this works first time if not defined.
+		$color = get_option( 'erp-panel-color' );
+		echo '<input class="erp-color-field" type="text" id="erp-panel-color" name="erp-panel-color" value="' . esc_attr( $color ) . '" />';
+	}
+	/**
+	 * Linkss class field cb
+	 */
+	public function link_css_class_field_cb() {
+		// TODO check this works first time if not defined.
+		$classes = get_option( 'erp-link-css-class' );
+		echo '<input type="text" id="erp-link-css-class" name="erp-link-css-class" value="' . esc_attr( $classes ) . '" placeholder="eg. btn primary-btn" />';
 	}
 
 }
