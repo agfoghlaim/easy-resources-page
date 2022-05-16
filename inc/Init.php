@@ -20,8 +20,10 @@ final class Init {
 	 */
 	public static function get_services() {
 		return array(
+			CustomTaxonomy\Resource::class,
 			Base\Enqueue::class,
-			// ... any other services.
+			Base\TemplateController::class,
+			API\Settings::class
 		);
 	}
 

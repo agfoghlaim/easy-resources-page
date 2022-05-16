@@ -1,0 +1,207 @@
+@import 'variables';
+
+.easy-resources-page-content-wrap {
+	margin: 3rem 10vw 3rem 10vw;
+}
+@media only screen and (max-width: 900px) {
+	.easy-resources-page-content-wrap {
+		margin: 3rem 5vw 3rem 5vw;
+	}
+}
+
+// Make sure intro is not covered by .torn.
+.resources-intro {
+	position: relative;
+	z-index: 1;
+}
+
+.easy-resources-page-section-wrap {
+	display: grid;
+	font-size: 16px;
+	align-content: flex-start;
+	grid-auto-flow: row;
+	grid-gap: 1.5em;
+	min-height: 90vh;
+	margin: 0 auto 0 0;
+	max-width: 60em;
+	.easy-resources-page-item {
+		display: grid;
+		align-content: center;
+		.easy-resources-page-title {
+			background: $dark-white;
+			padding: 0;
+			cursor: pointer;
+			position: relative;
+			border-radius: $border-radius;
+
+			font-size: 1em;
+			line-height: 1.5;
+			display: grid;
+			margin: 0em 0em 0em 0em;
+			justify-content: stretch;
+
+			.showHideResourcesBtn {
+				display: grid;
+				position: relative;
+				cursor: pointer;
+				font-family: inherit;
+				color: $black;
+				height: 100%;
+				background: none;
+				border: none;
+				padding: 1.5em;
+				align-content: center;
+				justify-content: flex-start;
+				font-size: 16px;
+				font-weight: 700;
+				grid-gap: 1.5rem;
+				align-items: center;
+				justify-items: flex-start;
+				padding-right: 4.5rem;
+
+				.easy-resources-page-term-title {
+					padding: 0.1875em 0em;
+					border-radius: $border-radius;
+					color: $light-black;
+					pointer-events: none;
+					line-height: 1.5;
+				}
+				.easy-resources-page-term-description {
+					font-size: $smallFontSize;
+					font-weight: 500;
+					text-align: left;
+					pointer-events: none;
+					line-height: 1.5;
+				}
+			}
+
+			// cheveron-down when panel collapsed.
+			.showHideResourcesBtn[aria-expanded='false']::after {
+				content: url("data:image/svg+xml; utf8, <svg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'><polygon fill='$black' fill-rule='evenodd' points='1319.899 365.778 1327.678 358 1329.799 360.121 1319.899 370.021 1310 360.121 1312.121 358' transform='translate(-1310 -358)'/></svg>");
+				background-size: 2em 2em;
+				height: 2em;
+				width: 2em;
+				position: absolute;
+				right: 1.5em;
+				top: calc(50% - 0.6em);
+			}
+
+			// cheveron-up when panel open.
+			.showHideResourcesBtn[aria-expanded='true']::after {
+				content: url("data:image/svg+xml; utf8, <svg xmlns='http://www.w3.org/2000/svg' width='20' height='12'><polygon fill='$black' fill-rule='evenodd' points='1328 358 1330 360 1320 370 1310 360 1312 358 1320 366' transform='matrix(1,0,0,-1,-1310,370.021)'/></svg>");
+				background-size: 2em 2em;
+				height: 2em;
+				width: 2em;
+				position: absolute;
+				right: 1.5em;
+				top: calc(50% - 0.6em);
+			}
+		}
+
+		.easy-resources-page-panel {
+			display: none;
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height 0.3s ease-out;
+			background: $dark-white;
+			padding-bottom: 1.5rem;
+
+			// small item in panel
+			.easy-resources-page-panel-item {
+				background: $white;
+				margin: 0.1em 1.5rem;
+				border-radius: $border-radius;
+				padding: 2.8em 1.5em 1.5em 1.5em;
+				display: grid;
+				grid-auto-flow: column;
+				grid-gap: 1.5em;
+				align-items: flex-start;
+				grid-template-columns: 2fr 2fr 1fr;
+				.easy-resources-page-btns-wrap {
+					display: grid;
+					grid-gap: 1.5em;
+					grid-auto-flow: row;
+					a {
+						justify-self: flex-end;
+					}
+				}
+				div {
+					display: grid;
+					grid-auto-flow: row;
+
+					.easy-resources-page-file-info,
+					.easy-resources-page-date-info {
+						color: $mid-black;
+						font-weight: 500;
+						font-size: $smallFontSize;
+						line-height: 1.5;
+						text-transform: uppercase;
+					}
+
+					.easy-resources-page-item-title-wrap {
+						display: grid;
+						justify-content: flex-start;
+						margin-bottom: 1.5em;
+						h3 {
+							margin: 0em 0em 1.5em 0em;
+							padding: 0 0 18px 0;
+							font-size: $baseFontSize;
+							word-break: break-all;
+							font-weight: 500;
+						}
+						svg {
+							width: $heading-3;
+							path {
+								fill: $mid-black;
+							}
+						}
+					}
+				}
+				span {
+					word-break: break-all;
+					line-height: 1.5;
+				}
+			}
+		}
+
+		// Maintain display: grid until remove .show transition ends.
+		.easy-resources-page-panel.hiding {
+			display: grid;
+		}
+
+		.easy-resources-page-panel.show {
+			display: grid;
+		}
+	}
+}
+
+@media only screen and (max-width: 1200px) {
+	.easy-resources-page-section-wrap {
+		.easy-resources-page-item {
+			.easy-resources-page-panel {
+				.easy-resources-page-panel-item {
+					grid-auto-flow: row;
+					grid-template-columns: 1fr;
+					justify-items: flex-start;
+					.easy-resources-page-btns-wrap {
+						grid-auto-flow: column;
+					}
+				}
+			}
+		}
+	}
+}
+@media only screen and (max-width: 568px) {
+	.easy-resources-page-section-wrap {
+		.easy-resources-page-item {
+			.easy-resources-page-panel {
+				.easy-resources-page-panel-item {
+					justify-items: stretch;
+					.easy-resources-page-btns-wrap {
+						grid-auto-flow: row;
+					}
+				}
+			}
+		}
+	}
+}

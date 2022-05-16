@@ -2,7 +2,7 @@
 /**
  * Enqueue styles & scripts.
  *
- * @package marie-plugin-starter
+ * @package easy-resources-page
  * @version 1.0.0
  */
 
@@ -20,16 +20,27 @@ class Enqueue {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 	}
 
-	/**
-	 * Enqueue clientside style & script (on all clientside pages!).
-	 */
+		/**
+		 * Enqueue js & css if the plugin template is currently loaded.
+		 */
 	public function enqueue() {
+		
+		global $post;
 
+		if ( ! $post ) {
+			return;
+		}
 
-			wp_enqueue_style( 'easy-resources-page-client-style', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/css/easy-resources-page.css', array(), '1.0.0', 'all' );
+		// Get name of currently loaded template.
+		$template_name = get_post_meta( $post->ID, '_wp_page_template', true );
 
-			wp_enqueue_script( 'easy-resources-page-client-script', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/js/easy-resources-page.js', null, '1.0.0', true );
+		// Enqueue style & script only if plugin page template currently loaded.
+		if ( 'page-templates/resources-page.php' === $template_name ) {
 
+			wp_enqueue_style( 'easy-resources-page-style', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/css/easy-resources-page.css', array(), '1.0.0', 'all' );
+	
+			wp_enqueue_script( 'easy-resources-page-main', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/js/easy-resources-page.js', null, '1.0.0', true );
+		}
 	}
 
 }
