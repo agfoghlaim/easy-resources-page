@@ -19,12 +19,11 @@ class Settings {
 	public function register() {
 
 		add_action( 'admin_menu', array( $this, 'handle_add_menu_page' ) );
+		add_filter( 'plugin_action_links_easy-resources-page/easy-resources-page.php', array( $this, 'add_settings_link' ) );
 	}
 
-
-
 	/**
-	 * Register a custom menu page.
+	 * Register erp menu page.
 	 */
 	public function handle_add_menu_page() {
 		add_menu_page(
@@ -39,9 +38,21 @@ class Settings {
 	}
 
 	/**
-	 * TODO
+	 * Require settings page markup.
 	 */
 	public function get_admin_template() {
 		require_once dirname( __FILE__, 3 ) . '/admin-templates/admin.php';
+	}
+
+	/**
+	 * Intercept $links (deactivate, delete etc) on plugins list page and add link to erp settings.
+	 *
+	 * @param Array $links List of links.
+	 */
+	public function add_settings_link( $links ) {
+		$erp_setting_page_link = '<a href="options-general.php?page=erp_plugin">Settings</a>';
+		array_push( $links, $erp_setting_page_link );
+		return $links;
+
 	}
 }
