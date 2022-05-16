@@ -2,11 +2,11 @@
 /**
  * On plugin deactivation.
  *
- * @package marie-wp-plugin-starter
+ * @package easy-resources-page
  * @version 1.0.0
  */
 
-namespace MariePluginStarter\Base;
+namespace EasyResourcesPage\Base;
 
 /**
  * Deactivate plugin class.

@@ -1,5 +1,5 @@
 {
-    "name": "marie/marie-wp-plugin-starter",
+    "name": "marie/easy-resources-page",
     "type": "project",
     "license": "GPL",
     "authors": [
@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MariePluginStarter\\": "./inc"
+            "EasyResourcesPage\\": "./inc"
         }
     }
 }

@@ -6,7 +6,7 @@
  * @version 1.0.0
  */
 
-namespace MariePluginStarter\Base;
+namespace EasyResourcesPage\Base;
 
 /**
  * Enqueue files.
@@ -26,9 +26,9 @@ class Enqueue {
 	public function enqueue() {
 
 
-			wp_enqueue_style( 'marie-wp-plugin-starter-client-style', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/css/marie-wp-plugin-starter.css', array(), '1.0.0', 'all' );
+			wp_enqueue_style( 'easy-resources-page-client-style', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/css/easy-resources-page.css', array(), '1.0.0', 'all' );
 
-			wp_enqueue_script( 'marie-wp-plugin-starter-client-script', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/js/marie-wp-plugin-starter.js', null, '1.0.0', true );
+			wp_enqueue_script( 'easy-resources-page-client-script', plugin_dir_url( dirname( __FILE__, 2 ) ) . 'dist/js/easy-resources-page.js', null, '1.0.0', true );
 
 	}
 

@@ -2,11 +2,11 @@
 /**
  * Init. Loopes through classes in get_classes() array and calls register method.
  *
- * @package marie-wp-plugin-starter
+ * @package easy-resources-page
  * @version 1.0.0
  */
 
-namespace MariePluginStarter;
+namespace EasyResourcesPage;
 
 /**
  * Final Init class.
