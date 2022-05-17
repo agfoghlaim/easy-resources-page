@@ -11,10 +11,9 @@
 	<h1><?php esc_html_e( 'Easy Resources Page', 'easy-resources-page' ); ?></h1>
 	<?php settings_errors(); ?>
 	<p><?php esc_html_e( 'Thank you for using Easy Resources Page!', 'easy-resources-page' ); ?></p>
-	
-	
+
 	<h2><?php esc_html_e( 'Here\'s how to use the plugin:', 'easy-resources-page' ); ?></h2>
-	
+
 	<ol>
 		<li>
 		<?php esc_html_e( 'Add a Resource. Go to Media => Resource. Fill in the Name, Slug, Description & click \'Save\'. For example...', 'easy-resources-page' ); ?>

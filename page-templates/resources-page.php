@@ -3,6 +3,7 @@
  * Template Name: Resources (plugin)
  *
  * @package easy-resources-page
+ * @version 1.0.0
  */
 
 // TODO Test with a block theme!!! Think things will go bad if get_header() is called on a block theme. There's also a check in the main plugin file so this should ~never happen.

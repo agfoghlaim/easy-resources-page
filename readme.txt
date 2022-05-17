@@ -12,7 +12,7 @@ Create a resources page with almost no effort. Group assets together in the medi
 
 == Description ==
 
-Easy Resources Page creates a 'Resource' custom taxonomy so it's easy to group Media Library assets. It includes a custom page template that instantly displays your resources on the front end. This means that you can create a downloads or resources page with almost no effort.
+Easy Resources Page creates a 'Resource' custom taxonomy so it's easy to group Media Library assets. It includes a custom page template to display your resources on the front end. This means that you can create a downloads or resources page with almost no effort.
 
 Here's how to use the plugin:
 
@@ -25,9 +25,3 @@ Here's how to use the plugin:
 2. To assign items to your 'Press Releases' resource open the Media Library, click on the item you want to add, click "Edit More Details". Tick the 'Press Releases' box to assign the item.
 
 3. Then select the 'Easy Resources Page' template on the page you want to use. That's it!
-
-== Frequently Asked Questions ==
-    
-= Is this plugin compatible with block themes? =
-    
-No.😞

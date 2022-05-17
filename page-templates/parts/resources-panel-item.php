@@ -3,6 +3,7 @@
  * Render resources Item Panel.
  *
  * @package easy-resources-page
+ * @version 1.0.0
  */
 
 ?>
@@ -51,22 +52,22 @@ class="easy-resources-page-panel-item"
 			?>
 				<a 
 					class="easy-resources-page-default-btn <?php echo isset( $link_class ) && '' !== $link_class ? esc_attr( $link_class ) : ''; ?>" 
-					title="View in new tab" 
+					title="<?php esc_html_e( 'Preview in new tab', 'easy-resources-page' ); ?>" 
 					href="<?php echo esc_url( $post->guid ); ?>" 
 					target="<?php echo esc_attr( '_blank' ); ?>">
-					<span class="screen-reader-text">View <?php echo esc_html( $post->post_title ); ?></span>
-					<span>View</span>
+					<span class="screen-reader-text"><?php esc_html_e( 'Preview', 'easy-resources-page' ); ?> <?php echo esc_html( $post->post_title ); ?></span>
+					<span><?php esc_html_e( 'Preview', 'easy-resources-page' ); ?></span>
 				</a>
 				<?php
 		}
 		?>
 				<a 
 					class="easy-resources-page-default-btn <?php echo isset( $link_class ) && '' !== $link_class ? esc_attr( $link_class ) : ''; ?>" 
-					title="Download file" 
+					title="<?php esc_html_e( 'Download file', 'easy-resources-page' ); ?>" 
 					href="<?php echo esc_url( $post->guid ); ?>" 
 					download="<?php echo esc_html( $post->post_title ); ?>" >
-					<span class="screen-reader-text">Download <?php echo esc_html( $post->post_title ); ?></span>
-					<span>Download</span>
+					<span class="screen-reader-text"><?php esc_html_e( 'Download', 'easy-resources-page' ); ?> <?php echo esc_html( $post->post_title ); ?></span>
+					<span><?php esc_html_e( 'Download', 'easy-resources-page' ); ?></span>
 				</a>
 	</div>
 

@@ -1,14 +1,15 @@
 <?php
 /**
  * Plugin Name:       Easy Resources Page
- * Description:       Starter code for a wp plugin. Enqueues cs & js on client.
+ * Description:       Create a resources page with almost no effort. Group assets together in the media library, display them in accordions using the plugin's custom page template.
  * Version:           1.0.0
  * Author:            marieoh
- * Author URI:              https://marie.ie
+ * Author URI:        https://marie.ie
  * License:           GPL v2 or later
- * Text Domain:             easy-resources-page
+ * Text Domain:       easy-resources-page
  *
  * @package easy-resources-page
+ * @version 1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -28,7 +29,6 @@ if ( file_exists( dirname( __FILE__ ) . '/template-functions/easy-resources-page
 	require_once dirname( __FILE__ ) . '/template-functions/easy-resources-page-svg.php';
 
 }
-
 
 /**
  * On plugin Activate
