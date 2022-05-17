@@ -15,7 +15,6 @@
 
 .easy-resources-page-section-wrap {
 	display: grid;
-	// font-size: 16px;
 	align-content: flex-start;
 	grid-auto-flow: row;
 	grid-gap: 1.5em;
@@ -41,25 +40,35 @@
 				padding: 1.5rem;
 				align-content: center;
 				justify-content: flex-start;
-				font-weight: 700;
 				grid-gap: 1.5rem;
 				align-items: center;
 				justify-items: flex-start;
 				padding-right: 4.5rem;
 				font-size: inherit;
-
-				.easy-resources-page-term-title {
-					padding: 0.1875em 0em;
-
+				.easy-resources-page-button-content {
+					display: grid;
+					justify-content: flex-start;
+					justify-items: flex-start;
+					grid-gap: 1.5rem;
 					pointer-events: none;
-					line-height: 1.5;
-				}
-				.easy-resources-page-term-description {
-					font-size: 1rem; // normal size
-					font-weight: 500;
-					text-align: left;
-					pointer-events: none;
-					line-height: 1.5;
+					.easy-resources-page-term-title {
+						padding: 0.1875em 0em;
+
+						pointer-events: none;
+						line-height: 1.5;
+					}
+					.easy-resources-page-term-description {
+						// it's tricky to set font size that works everywhere, not getting great results with '1rem'. Can't inherit because we're inside a h2 and term-description could be too long. Fall back to 16px but default to 'medium' (no safari support).
+						font-size: 16px;
+						font-size: medium;
+						font-weight: normal;
+						text-align: left;
+						pointer-events: none;
+						text-transform: none;
+						line-height: 1.5;
+						max-width: 85%;
+						max-width: calc(100% - 4.5rem);
+					}
 				}
 			}
 			.easy-resources-page-chevron-up,
@@ -99,6 +108,15 @@
 				grid-template-columns: 2fr 2fr 1fr;
 
 				.easy-resources-page-panel-left {
+					display: grid;
+					justify-content: flex-start;
+					margin-bottom: 1.5em;
+					grid-gap: 1.5rem;
+					h3 {
+						word-break: break-all;
+						margin: 0;
+						padding: 0;
+					}
 					.easy-resources-page-file-info {
 						line-height: 1.5;
 						display: flex;
@@ -106,18 +124,6 @@
 						svg {
 							width: 1.5em;
 							fill: currentColor;
-						}
-					}
-
-					.easy-resources-page-item-title-wrap {
-						display: grid;
-						justify-content: flex-start;
-						margin-bottom: 1.5em;
-						h3 {
-							margin: 0em 0em 1.5em 0em;
-							padding: 0 0 18px 0;
-							word-break: break-all;
-							font-weight: 500;
 						}
 					}
 				}
@@ -131,9 +137,7 @@
 					grid-gap: 1.5em;
 					grid-auto-flow: row;
 					justify-content: flex-end;
-					a {
-						text-align: right;
-					}
+
 					span,
 					p {
 						word-break: break-all;
@@ -165,9 +169,6 @@
 					.easy-resources-page-panel-right {
 						grid-auto-flow: column;
 						justify-content: flex-start;
-						a {
-							text-align: left;
-						}
 					}
 				}
 			}
@@ -183,9 +184,6 @@
 					.easy-resources-page-panel-right {
 						grid-auto-flow: row;
 						justify-content: flex-start;
-						a {
-							text-align: left;
-						}
 					}
 				}
 			}

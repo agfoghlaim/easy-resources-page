@@ -74,8 +74,11 @@ if ( ! taxonomy_exists( 'erp_resource' ) ) {
 						aria-expanded="false"
 						aria-controls="<?php echo esc_attr($the_term->slug ); ?>"
 						>
-							<span class="easy-resources-page-term-title"><?php echo esc_html( $the_term->name ); ?></span>
-							<span class="easy-resources-page-term-description"><?php echo esc_html( $the_term->description ); ?></span>
+							<div class="easy-resources-page-button-content">
+
+								<span class="easy-resources-page-term-title"><?php echo esc_html( $the_term->name ); ?></span>
+								<span class="easy-resources-page-term-description"><?php echo esc_html( $the_term->description ); ?></span>
+							</div>
 							<span class="easy-resources-page-chevron-down" aria-hidden="true">
 			
 								<?php 	echo \EasyResourcesPage\Base\IconController::get_svg_by_icon_name( 'chevron-down' );?>

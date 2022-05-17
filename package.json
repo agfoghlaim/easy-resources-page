@@ -5,7 +5,7 @@
   "main": "webpack.mix.js",
   "scripts": {
     "production": "mix --production",
-    "copy-files": "npx mkdirp ../mwps-output && cp -r dist -r inc -r src index.php easy-resources-page.php readme.txt ../mwps-output && npx mkdirp ../mwps-output/vendor && cp -r vendor/composer/ -r vendor/autoload.php ../mwps-output/vendor",
+    "copy-files": "npx mkdirp ../mwps-output && cp -r admin-templates -r dist -r inc -r page-templates -r src index.php easy-resources-page.php readme.txt ../mwps-output && npx mkdirp ../mwps-output/vendor && cp -r vendor/composer/ -r vendor/autoload.php ../mwps-output/vendor",
     "bundle": "cd ../mwps-output && npx dir-archiver --src . --dest ../easy-resources-page.zip && cd ../ && rm -r mwps-output",
     "release": "npm run production && npm run copy-files && npm run bundle"
   },
