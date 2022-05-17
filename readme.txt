@@ -1,4 +1,4 @@
-=== Marie Theme Front Page ===
+=== Easy Resources Page ===
 Contributors: marieoh
 Requires at Least: 5.2
 Tested Up To: 5.9
@@ -12,7 +12,7 @@ Create a resources page with almost no effort. Group assets together in the medi
 
 == Description ==
 
-Easy Resources Page creates a 'Resource' custom taxonomy so it's easy to group Media Library assets. It includes a custom page template to display your resources on the front end. This means that you can create a downloads or resources page with almost no effort.
+Easy Resources Page creates a 'Resource' custom taxonomy so it's easy to group Media Library assets. It includes a custom page template to automatically display your resources inside accordions on the front end. This means that you can create an organised downloads or resources page with almost no effort.
 
 Here's how to use the plugin:
 
