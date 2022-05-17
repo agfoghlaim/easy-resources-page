@@ -14,25 +14,72 @@ namespace EasyResourcesPage\Base;
 class IconController {
 
 	/**
-	 * Get the SVG code for the specified icon
+	 * Return svg for an icon name. Return default file svg if icon name is not on the list.
 	 *
 	 * @param string $icon Icon name.
-	 * @param string $color Color.
 	 */
-	public static function get_svg( $icon, $color = '#444242' ) {
+	public static function get_svg_by_icon_name( $icon ) {
 
-			$arr = self::$svg_icon_list;
-
-		if ( array_key_exists( $icon, $arr ) ) {
+		$arr = self::$svg_icon_list;
+		if ( false === array_key_exists( $icon, $arr ) ) {
+			$icon = 'application'; // default file icon.
+		}
 			$repl = '<svg class="svg-icon" aria-hidden="true" role="img" focusable="false" ';
 			$svg  = preg_replace( '/^<svg /', $repl, trim( $arr[ $icon ] ) ); // Add extra attributes to SVG code.
-			$svg  = str_replace( '#444242', $color, $svg ); // Replace the color.
 			$svg  = str_replace( '#', '%23', $svg ); // Urlencode hashes.
 			$svg  = preg_replace( "/([\n\t]+)/", ' ', $svg ); // Remove newlines & tabs.
 			$svg  = preg_replace( '/>\s*</', '><', $svg ); // Remove white space between SVG tags.
 			return $svg;
+	}
+
+	/**
+	 * Echos appropiate svg code for a mime type
+	 *
+	 * @param String $mime_type attachment mime type.
+	 */
+	public static function get_svg_by_mime_type( $mime_type ) {
+		if ( array_key_exists( $mime_type, self::$map_mime_type_to_icon_name ) ) {
+			$icon_name = self::$map_mime_type_to_icon_name[ $mime_type ];
+		} else {
+			$icon_name = 'application';
 		}
-		return null;
+
+		// Make sure that only our allowed tags and attributes are included.
+		$svg = wp_kses(
+			self::get_svg_by_icon_name( $icon_name ),
+			array(
+				'svg'     => array(
+					'class'       => true,
+					'xmlns'       => true,
+					'width'       => true,
+					'height'      => true,
+					'viewbox'     => true,
+					'aria-hidden' => true,
+					'role'        => true,
+					'focusable'   => true,
+				),
+				'path'    => array(
+					'fill'      => true,
+					'fill-rule' => true,
+					'd'         => true,
+					'transform' => true,
+				),
+				'polygon' => array(
+					'fill'      => true,
+					'fill-rule' => true,
+					'points'    => true,
+					'transform' => true,
+					'focusable' => true,
+				),
+			)
+		);
+
+		if ( ! $svg ) {
+			echo '';
+		}
+
+		// @codingStandardsIgnoreLine -- see wp_kses
+		echo $svg; 
 	}
 
 	/**
@@ -41,37 +88,126 @@ class IconController {
 	 * @var array
 	 */
 	public static $svg_icon_list = array(
-		'arrow-down'          => '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 22 24">
-		<polygon fill="#FFF" points="721.105 856 721.105 874.315 728.083 867.313 730.204 869.41 719.59 880 709 869.41 711.074 867.313 718.076 874.315 718.076 856" transform="translate(-709 -856)"/>
-		</svg>',
-		'arrow-down-circled ' => '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-		<path fill="#FFF" fill-rule="evenodd" d="M16,32 C7.163444,32 0,24.836556 0,16 C0,7.163444 7.163444,0 16,0 C24.836556,0 32,7.163444 32,16 C32,24.836556 24.836556,32 16,32 Z M16.7934656,8 L15.4886113,8 L15.4886113,21.5300971 L10.082786,16.1242718 L9.18181515,17.0407767 L16.1410384,24 L23.1157957,17.0407767 L22.1915239,16.1242718 L16.7934656,21.5300971 L16.7934656,8 Z"/>
-		</svg>',
-		'chevron-down'        => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="12" viewBox="0 0 20 12">
+		'chevron-down'           => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="12" viewBox="0 0 20 12">
 		<polygon fill="#444242" fill-rule="evenodd" points="1319.899 365.778 1327.678 358 1329.799 360.121 1319.899 370.021 1310 360.121 1312.121 358" transform="translate(-1310 -358)"/>
 		</svg>',
-		'chevron-up'          => '<svg width="20" height="12" viewBox="0 0 20 12" version="1.1" id="svg4">
+		'chevron-up'             => '<svg width="20" height="12" viewBox="0 0 20 12" version="1.1" id="svg4">
 			<path transform="matrix(1,0,0,-1,-1310,370.021)" id="polygon2" fill="#1a1a1b" fill-rule="evenodd" d="M1327.678 358l2.121 2.121-9.9 9.9-9.899-9.9 2.121-2.121 7.778 7.778z"/>
 		</svg>',
-		'cross'               => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-		<polygon fill="#444242" fill-rule="evenodd" points="6.852 7.649 .399 1.195 1.445 .149 7.899 6.602 14.352 .149 15.399 1.195 8.945 7.649 15.399 14.102 14.352 15.149 7.899 8.695 1.445 15.149 .399 14.102"/>
-		</svg>',
-		'folder'              => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19">
-		<path fill="#444242" d="M2.8,1.85 C2.275329,1.85 1.85,2.27532949 1.85,2.8 L1.85,15.4 C1.85,15.9246705 2.275329,16.35 2.8,16.35 L17.2,16.35 C17.724671,16.35 18.15,15.9246705 18.15,15.4 L18.15,5.5 C18.15,4.97532949 17.724671,4.55 17.2,4.55 L9.1,4.55 C8.8158,4.55 8.550403,4.40796403 8.392757,4.17149517 L6.845094,1.85 L2.8,1.85 Z M17.2,2.85 C18.663555,2.85 19.85,4.03644541 19.85,5.5 L19.85,15.4 C19.85,16.8635546 18.663555,18.05 17.2,18.05 L2.8,18.05 C1.336445,18.05 0.15,16.8635546 0.15,15.4 L0.15,2.8 C0.15,1.33644541 1.336445,0.15 2.8,0.15 L7.3,0.15 C7.5842,0.15 7.849597,0.292035965 8.007243,0.528504833 L9.554906,2.85 L17.2,2.85 Z"/>
-		</svg>',
-		'link'                => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-		<path d="M6.70846497,10.3082552 C6.43780491,9.94641406 6.5117218,9.43367048 6.87356298,9.16301045 C7.23540415,8.89235035 7.74814771,8.96626726 8.01880776,9.32810842 C8.5875786,10.0884893 9.45856383,10.5643487 10.4057058,10.6321812 C11.3528479,10.7000136 12.2827563,10.3531306 12.9541853,9.68145807 L15.3987642,7.23705399 C16.6390369,5.9529049 16.6212992,3.91168563 15.3588977,2.6492841 C14.0964962,1.38688258 12.0552769,1.36914494 10.77958,2.60113525 L9.37230725,4.00022615 C9.05185726,4.31881314 8.53381538,4.31730281 8.21522839,3.99685275 C7.89664141,3.67640269 7.89815174,3.15836082 8.21860184,2.83977385 L9.63432671,1.43240056 C11.5605503,-0.42800847 14.6223793,-0.401402004 16.5159816,1.49220028 C18.4095838,3.38580256 18.4361903,6.44763148 16.5658147,8.38399647 L14.1113741,10.838437 C13.1043877,11.8457885 11.7095252,12.366113 10.2888121,12.2643643 C8.86809903,12.1626156 7.56162126,11.4488264 6.70846497,10.3082552 Z M11.291535,7.6917448 C11.5621951,8.05358597 11.4882782,8.56632952 11.126437,8.83698955 C10.7645959,9.10764965 10.2518523,9.03373274 9.98119227,8.67189158 C9.4124214,7.91151075 8.54143617,7.43565129 7.59429414,7.36781884 C6.6471521,7.29998638 5.71724372,7.64686937 5.04581464,8.31854193 L2.60123581,10.762946 C1.36096312,12.0470951 1.37870076,14.0883144 2.64110228,15.3507159 C3.90350381,16.6131174 5.94472309,16.630855 7.21873082,15.400549 L8.61782171,14.0014581 C8.93734159,13.6819382 9.45538568,13.6819382 9.77490556,14.0014581 C10.0944254,14.320978 10.0944254,14.839022 9.77490556,15.1585419 L8.36567329,16.5675994 C6.43944966,18.4280085 3.37762074,18.401402 1.48401846,16.5077998 C-0.409583822,14.6141975 -0.436190288,11.5523685 1.43418536,9.61600353 L3.88862594,7.16156298 C4.89561225,6.15421151 6.29047483,5.63388702 7.71118789,5.7356357 C9.13190097,5.83738438 10.4383788,6.55117356 11.291535,7.6917448 Z"/>
-		</svg>',
-		'pdf'                 => '<svg aria-hidden="true" width="18" focusable="false" data-prefix="fas" data-icon="file-pdf" class="svg-inline--fa fa-file-pdf fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.2 10.8 24 24 24zm-8 171.8c-20-12.2-33.3-29-42.7-53.8 4.5-18.5 11.6-46.6 6.2-64.2-4.7-29.4-42.4-26.5-47.8-6.8-5 18.3-.4 44.1 8.1 77-11.6 27.6-28.7 64.6-40.8 85.8-.1 0-.1.1-.2.1-27.1 13.9-73.6 44.5-54.5 68 5.6 6.9 16 10 21.5 10 17.9 0 35.7-18 61.1-61.8 25.8-8.5 54.1-19.1 79-23.2 21.7 11.8 47.1 19.5 64 19.5 29.2 0 31.2-32 19.7-43.4-13.9-13.6-54.3-9.7-73.6-7.2zM377 105L279 7c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-74.1 255.3c4.1-2.7-2.5-11.9-42.8-9 37.1 15.8 42.8 9 42.8 9z"></path></svg>',
-		'jpg'                 => '<svg width="18" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-image" class="svg-inline--fa fa-file-image fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M384 121.941V128H256V0h6.059a24 24 0 0 1 16.97 7.029l97.941 97.941a24.002 24.002 0 0 1 7.03 16.971zM248 160c-13.2 0-24-10.8-24-24V0H24C10.745 0 0 10.745 0 24v464c0 13.255 10.745 24 24 24h336c13.255 0 24-10.745 24-24V160H248zm-135.455 16c26.51 0 48 21.49 48 48s-21.49 48-48 48-48-21.49-48-48 21.491-48 48-48zm208 240h-256l.485-48.485L104.545 328c4.686-4.686 11.799-4.201 16.485.485L160.545 368 264.06 264.485c4.686-4.686 12.284-4.686 16.971 0L320.545 304v112z"></path></svg>',
-		'jpeg'                => '<svg width="18" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-image" class="svg-inline--fa fa-file-image fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M384 121.941V128H256V0h6.059a24 24 0 0 1 16.97 7.029l97.941 97.941a24.002 24.002 0 0 1 7.03 16.971zM248 160c-13.2 0-24-10.8-24-24V0H24C10.745 0 0 10.745 0 24v464c0 13.255 10.745 24 24 24h336c13.255 0 24-10.745 24-24V160H248zm-135.455 16c26.51 0 48 21.49 48 48s-21.49 48-48 48-48-21.49-48-48 21.491-48 48-48zm208 240h-256l.485-48.485L104.545 328c4.686-4.686 11.799-4.201 16.485.485L160.545 368 264.06 264.485c4.686-4.686 12.284-4.686 16.971 0L320.545 304v112z"></path></svg>',
-		'png'                 => '<svg width="18" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-image" class="svg-inline--fa fa-file-image fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M384 121.941V128H256V0h6.059a24 24 0 0 1 16.97 7.029l97.941 97.941a24.002 24.002 0 0 1 7.03 16.971zM248 160c-13.2 0-24-10.8-24-24V0H24C10.745 0 0 10.745 0 24v464c0 13.255 10.745 24 24 24h336c13.255 0 24-10.745 24-24V160H248zm-135.455 16c26.51 0 48 21.49 48 48s-21.49 48-48 48-48-21.49-48-48 21.491-48 48-48zm208 240h-256l.485-48.485L104.545 328c4.686-4.686 11.799-4.201 16.485.485L160.545 368 264.06 264.485c4.686-4.686 12.284-4.686 16.971 0L320.545 304v112z"></path></svg>',
-		'doc'                 => '<svg width="18" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-word" class="svg-inline--fa fa-file-word fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm57.1 120H305c7.7 0 13.4 7.1 11.7 14.7l-38 168c-1.2 5.5-6.1 9.3-11.7 9.3h-38c-5.5 0-10.3-3.8-11.6-9.1-25.8-103.5-20.8-81.2-25.6-110.5h-.5c-1.1 14.3-2.4 17.4-25.6 110.5-1.3 5.3-6.1 9.1-11.6 9.1H117c-5.6 0-10.5-3.9-11.7-9.4l-37.8-168c-1.7-7.5 4-14.6 11.7-14.6h24.5c5.7 0 10.7 4 11.8 9.7 15.6 78 20.1 109.5 21 122.2 1.6-10.2 7.3-32.7 29.4-122.7 1.3-5.4 6.1-9.1 11.7-9.1h29.1c5.6 0 10.4 3.8 11.7 9.2 24 100.4 28.8 124 29.6 129.4-.2-11.2-2.6-17.8 21.6-129.2 1-5.6 5.9-9.5 11.5-9.5zM384 121.9v6.1H256V0h6.1c6.4 0 12.5 2.5 17 7l97.9 98c4.5 4.5 7 10.6 7 16.9z"></path></svg>',
-		'docx'                => '<svg width="18" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-word" class="svg-inline--fa fa-file-word fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm57.1 120H305c7.7 0 13.4 7.1 11.7 14.7l-38 168c-1.2 5.5-6.1 9.3-11.7 9.3h-38c-5.5 0-10.3-3.8-11.6-9.1-25.8-103.5-20.8-81.2-25.6-110.5h-.5c-1.1 14.3-2.4 17.4-25.6 110.5-1.3 5.3-6.1 9.1-11.6 9.1H117c-5.6 0-10.5-3.9-11.7-9.4l-37.8-168c-1.7-7.5 4-14.6 11.7-14.6h24.5c5.7 0 10.7 4 11.8 9.7 15.6 78 20.1 109.5 21 122.2 1.6-10.2 7.3-32.7 29.4-122.7 1.3-5.4 6.1-9.1 11.7-9.1h29.1c5.6 0 10.4 3.8 11.7 9.2 24 100.4 28.8 124 29.6 129.4-.2-11.2-2.6-17.8 21.6-129.2 1-5.6 5.9-9.5 11.5-9.5zM384 121.9v6.1H256V0h6.1c6.4 0 12.5 2.5 17 7l97.9 98c4.5 4.5 7 10.6 7 16.9z"></path></svg>',
-		'generic_file'        => '<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file" class="svg-inline--fa fa-file fa-w-12" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm160-14.1v6.1H256V0h6.1c6.4 0 12.5 2.5 17 7l97.9 98c4.5 4.5 7 10.6 7 16.9z"></path></svg>',
-		'plus'                => '<svg aria-hidden="true" width="18" class="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>',
-		'minus'               => '<svg aria-hidden="true"  data-icon="minus" width="18" class="svg-inline--fa fa-minus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>',
-		'mp4'                 => '<svg aria-hidden="true" viewBox="0 0 384 512"><path d="M256 0v128h128L256 0zM224 128L224 0H48C21.49 0 0 21.49 0 48v416C0 490.5 21.49 512 48 512h288c26.51 0 48-21.49 48-48V160h-127.1C238.3 160 224 145.7 224 128zM224 384c0 17.67-14.33 32-32 32H96c-17.67 0-32-14.33-32-32V288c0-17.67 14.33-32 32-32h96c17.67 0 32 14.33 32 32V384zM320 284.9v102.3c0 12.57-13.82 20.23-24.48 13.57L256 376v-80l39.52-24.7C306.2 264.6 320 272.3 320 284.9z"/></svg>',
+		'image'                  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M224 128L224 0H48C21.49 0 0 21.49 0 48v416C0 490.5 21.49 512 48 512h288c26.51 0 48-21.49 48-48V160h-127.1C238.3 160 224 145.7 224 128zM96 224c17.67 0 32 14.33 32 32S113.7 288 96 288S64 273.7 64 256S78.33 224 96 224zM318.1 439.5C315.3 444.8 309.9 448 304 448h-224c-5.9 0-11.32-3.248-14.11-8.451c-2.783-5.201-2.479-11.52 .7949-16.42l53.33-80C122.1 338.7 127.1 336 133.3 336s10.35 2.674 13.31 7.125L160 363.2l45.35-68.03C208.3 290.7 213.3 288 218.7 288s10.35 2.674 13.31 7.125l85.33 128C320.6 428 320.9 434.3 318.1 439.5zM256 0v128h128L256 0z"/></svg>',
+		'video'                  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M256 0v128h128L256 0zM224 128L224 0H48C21.49 0 0 21.49 0 48v416C0 490.5 21.49 512 48 512h288c26.51 0 48-21.49 48-48V160h-127.1C238.3 160 224 145.7 224 128zM224 384c0 17.67-14.33 32-32 32H96c-17.67 0-32-14.33-32-32V288c0-17.67 14.33-32 32-32h96c17.67 0 32 14.33 32 32V384zM320 284.9v102.3c0 12.57-13.82 20.23-24.48 13.57L256 376v-80l39.52-24.7C306.2 264.6 320 272.3 320 284.9z"/></svg>',
+		'audio'                  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M224 128L224 0H48C21.49 0 0 21.49 0 48v416C0 490.5 21.49 512 48 512h288c26.51 0 48-21.49 48-48V160h-127.1C238.3 160 224 145.7 224 128zM176 404c0 10.75-12.88 15.98-20.5 8.484L120 376H76C69.38 376 64 370.6 64 364v-56C64 301.4 69.38 296 76 296H120l35.5-36.5C163.1 251.9 176 257.3 176 268V404zM224 387.8c-4.391 0-8.75-1.835-11.91-5.367c-5.906-6.594-5.359-16.69 1.219-22.59C220.2 353.7 224 345.2 224 336s-3.797-17.69-10.69-23.88c-6.578-5.906-7.125-16-1.219-22.59c5.922-6.594 16.05-7.094 22.59-1.219C248.2 300.5 256 317.8 256 336s-7.766 35.53-21.31 47.69C231.6 386.4 227.8 387.8 224 387.8zM320 336c0 41.81-20.5 81.11-54.84 105.1c-2.781 1.938-5.988 2.875-9.145 2.875c-5.047 0-10.03-2.375-13.14-6.844c-5.047-7.25-3.281-17.22 3.969-22.28C272.6 396.9 288 367.4 288 336s-15.38-60.84-41.14-78.8c-7.25-5.062-9.027-15.03-3.98-22.28c5.047-7.281 14.99-9.062 22.27-3.969C299.5 254.9 320 294.2 320 336zM256 0v128h128L256 0z"/></svg>',
+		'text'                   => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 64C0 28.65 28.65 0 64 0H224V128C224 145.7 238.3 160 256 160H384V299.6L289.3 394.3C281.1 402.5 275.3 412.8 272.5 424.1L257.4 484.2C255.1 493.6 255.7 503.2 258.8 512H64C28.65 512 0 483.3 0 448V64zM256 128V0L384 128H256zM564.1 250.1C579.8 265.7 579.8 291 564.1 306.7L534.7 336.1L463.8 265.1L493.2 235.7C508.8 220.1 534.1 220.1 549.8 235.7L564.1 250.1zM311.9 416.1L441.1 287.8L512.1 358.7L382.9 487.9C378.8 492 373.6 494.9 368 496.3L307.9 511.4C302.4 512.7 296.7 511.1 292.7 507.2C288.7 503.2 287.1 497.4 288.5 491.1L303.5 431.8C304.9 426.2 307.8 421.1 311.9 416.1V416.1z"/></svg>',
+		'application'            => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 64C0 28.65 28.65 0 64 0H224V128C224 145.7 238.3 160 256 160H384V448C384 483.3 355.3 512 320 512H64C28.65 512 0 483.3 0 448V64zM256 128V0L384 128H256z"/></svg>',
+		'application-pdf'        => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M88 304H80V256H88C101.3 256 112 266.7 112 280C112 293.3 101.3 304 88 304zM192 256H200C208.8 256 216 263.2 216 272V336C216 344.8 208.8 352 200 352H192V256zM224 0V128C224 145.7 238.3 160 256 160H384V448C384 483.3 355.3 512 320 512H64C28.65 512 0 483.3 0 448V64C0 28.65 28.65 0 64 0H224zM64 224C55.16 224 48 231.2 48 240V368C48 376.8 55.16 384 64 384C72.84 384 80 376.8 80 368V336H88C118.9 336 144 310.9 144 280C144 249.1 118.9 224 88 224H64zM160 368C160 376.8 167.2 384 176 384H200C226.5 384 248 362.5 248 336V272C248 245.5 226.5 224 200 224H176C167.2 224 160 231.2 160 240V368zM288 224C279.2 224 272 231.2 272 240V368C272 376.8 279.2 384 288 384C296.8 384 304 376.8 304 368V320H336C344.8 320 352 312.8 352 304C352 295.2 344.8 288 336 288H304V256H336C344.8 256 352 248.8 352 240C352 231.2 344.8 224 336 224H288zM256 0L384 128H256V0z"/></svg>',
+		'application-zip'        => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M256 0v128h128L256 0zM224 128L224 0H48C21.49 0 0 21.49 0 48v416C0 490.5 21.49 512 48 512h288c26.51 0 48-21.49 48-48V160h-127.1C238.3 160 224 145.7 224 128zM96 32h64v32H96V32zM96 96h64v32H96V96zM96 160h64v32H96V160zM128.3 415.1c-40.56 0-70.76-36.45-62.83-75.45L96 224h64l30.94 116.9C198.7 379.7 168.5 415.1 128.3 415.1zM144 336h-32C103.2 336 96 343.2 96 352s7.164 16 16 16h32C152.8 368 160 360.8 160 352S152.8 336 144 336z"/></svg>',
+		'application-word'       => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M224 128L224 0H48C21.49 0 0 21.49 0 48v416C0 490.5 21.49 512 48 512h288c26.51 0 48-21.49 48-48V160h-127.1C238.3 160 224 145.7 224 128zM281.5 240h23.37c7.717 0 13.43 7.18 11.69 14.7l-42.46 184C272.9 444.1 268 448 262.5 448h-29.26c-5.426 0-10.18-3.641-11.59-8.883L192 329.1l-29.61 109.1C160.1 444.4 156.2 448 150.8 448H121.5c-5.588 0-10.44-3.859-11.69-9.305l-42.46-184C65.66 247.2 71.37 240 79.08 240h23.37c5.588 0 10.44 3.859 11.69 9.301L137.8 352L165.6 248.9C167 243.6 171.8 240 177.2 240h29.61c5.426 0 10.18 3.641 11.59 8.883L246.2 352l23.7-102.7C271.1 243.9 275.1 240 281.5 240zM256 0v128h128L256 0z"/></svg>',
+		'application-excel'      => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M224 128L224 0H48C21.49 0 0 21.49 0 48v416C0 490.5 21.49 512 48 512h288c26.51 0 48-21.49 48-48V160h-127.1C238.3 160 224 145.7 224 128zM272.1 264.4L224 344l48.99 79.61C279.6 434.3 271.9 448 259.4 448h-26.43c-5.557 0-10.71-2.883-13.63-7.617L192 396l-27.31 44.38C161.8 445.1 156.6 448 151.1 448H124.6c-12.52 0-20.19-13.73-13.63-24.39L160 344L111 264.4C104.4 253.7 112.1 240 124.6 240h26.43c5.557 0 10.71 2.883 13.63 7.613L192 292l27.31-44.39C222.2 242.9 227.4 240 232.9 240h26.43C271.9 240 279.6 253.7 272.1 264.4zM256 0v128h128L256 0z"/></svg>',
+		'application-powerpoint' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M256 0v128h128L256 0zM224 128L224 0H48C21.49 0 0 21.49 0 48v416C0 490.5 21.49 512 48 512h288c26.51 0 48-21.49 48-48V160h-127.1C238.3 160 224 145.7 224 128zM279.6 308.1C284.2 353.5 248.5 392 204 392H160v40C160 440.8 152.8 448 144 448H128c-8.836 0-16-7.164-16-16V256c0-8.836 7.164-16 16-16h71.51C239.3 240 275.6 268.5 279.6 308.1zM160 344h44c15.44 0 28-12.56 28-28S219.4 288 204 288H160V344z"/></svg>',
 	);
+
+	/**
+	 * By mime
+	 *
+	 * @var array
+	 */
+	public static $map_mime_type_to_icon_name = array(
+		'image/jpeg'                                       => 'image',
+		'image/gif'                                        => 'image',
+		'image/png'                                        => 'image',
+		'image/bmp'                                        => 'image',
+		'image/tiff'                                       => 'image',
+		'image/webp'                                       => 'image',
+		'image/x-icon'                                     => 'image',
+		'image/heic'                                       => 'image',
+		'video/x-ms-asf'                                   => 'video',
+		'video/x-ms-wmv'                                   => 'video',
+		'video/x-ms-wmx'                                   => 'video',
+		'video/x-ms-wm'                                    => 'video',
+		'video/avi'                                        => 'video',
+		'video/divx'                                       => 'video',
+		'video/x-flv'                                      => 'video',
+		'video/quicktime'                                  => 'video',
+		'video/mpeg'                                       => 'video',
+		'video/mp4'                                        => 'video',
+		'video/ogg'                                        => 'video',
+		'video/webm'                                       => 'video',
+		'video/x-matroska'                                 => 'video',
+		'video/3gpp'                                       => 'video',
+		'video/3gpp2'                                      => 'video',
+		'text/plain'                                       => 'text',
+		'text/csv'                                         => 'text',
+		'text/tab-separated-values'                        => 'text',
+		'text/calendar'                                    => 'text',
+		'text/richtext'                                    => 'text',
+		'text/css'                                         => 'text',
+		'text/html'                                        => 'text',
+		'text/vtt'                                         => 'text',
+		'application/ttaf+xml'                             => 'application',
+		'audio/mpeg'                                       => 'audio',
+		'audio/aac'                                        => 'audio',
+		'audio/x-realaudio'                                => 'audio',
+		'audio/wav'                                        => 'audio',
+		'audio/ogg'                                        => 'audio',
+		'audio/flac'                                       => 'audio',
+		'audio/midi'                                       => 'audio',
+		'audio/x-ms-wma'                                   => 'audio',
+		'audio/x-ms-wax'                                   => 'audio',
+		'audio/x-matroska'                                 => 'audio',
+		'application/rtf'                                  => 'application',
+		'application/javascript'                           => 'application',
+		'application/pdf'                                  => 'application-pdf',
+		'application/java'                                 => 'application',
+		'application/x-tar'                                => 'application-zip',
+		'application/zip'                                  => 'application-zip',
+		'application/x-gzip'                               => 'application-zip',
+		'application/rar'                                  => 'application-zip',
+		'application/x-7z-compressed'                      => 'application-zip',
+		'application/octet-stream'                         => 'application',
+		'application/octet-stream'                         => 'application',
+		'application/msword'                               => 'application-word',
+		'application/vnd.ms-powerpoint'                    => 'application-powerpoint',
+		'application/vnd.ms-write'                         => 'application',
+		'application/vnd.ms-excel'                         => 'application-excel',
+		'application/vnd.ms-access'                        => 'application',
+		'application/vnd.ms-project'                       => 'application',
+		'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'application',
+		'application/vnd.ms-word.document.macroEnabled.12' => 'application',
+		'application/vnd.openxmlformats-officedocument.wordprocessingml.template' => 'application',
+		'application/vnd.ms-word.template.macroEnabled.12' => 'application',
+		'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'application',
+		'application/vnd.ms-excel.sheet.macroEnabled.12'   => 'application',
+		'application/vnd.ms-excel.sheet.binary.macroEnabled.12' => 'application',
+		'application/vnd.openxmlformats-officedocument.spreadsheetml.template' => 'application',
+		'application/vnd.ms-excel.template.macroEnabled.12' => 'application',
+		'application/vnd.ms-excel.addin.macroEnabled.12'   => 'application',
+		'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'application',
+		'application/vnd.ms-powerpoint.presentation.macroEnabled.12' => 'application',
+		'application/vnd.openxmlformats-officedocument.presentationml.slideshow' => 'application',
+		'application/vnd.ms-powerpoint.slideshow.macroEnabled.12' => 'application',
+		'application/vnd.openxmlformats-officedocument.presentationml.template' => 'application',
+		'application/vnd.ms-powerpoint.template.macroEnabled.12' => 'application',
+		'application/vnd.ms-powerpoint.addin.macroEnabled.12' => 'application',
+		'application/vnd.openxmlformats-officedocument.presentationml.slide' => 'application',
+		'application/vnd.ms-powerpoint.slide.macroEnabled.12' => 'application',
+		'application/onenote'                              => 'application',
+		'application/oxps'                                 => 'application',
+		'application/vnd.ms-xpsdocument'                   => 'application',
+		'application/vnd.oasis.opendocument.text'          => 'application',
+		'application/vnd.oasis.opendocument.presentation'  => 'application',
+		'application/vnd.oasis.opendocument.spreadsheet'   => 'application',
+		'application/vnd.oasis.opendocument.graphics'      => 'application',
+		'application/vnd.oasis.opendocument.chart'         => 'application',
+		'application/vnd.oasis.opendocument.database'      => 'application',
+		'application/vnd.oasis.opendocument.formula'       => 'application',
+		'application/wordperfect'                          => 'application',
+		'application/vnd.apple.keynote'                    => 'application',
+		'application/vnd.apple.numbers'                    => 'application',
+		'application/vnd.apple.pages'                      => 'application',
+	);
+
+
+
+
 
 }

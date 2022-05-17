@@ -14,14 +14,15 @@ if ( ! taxonomy_exists( 'erp_resource' ) ) {
 
 ?>
 <div class="easy-resources-page-content-wrap">
+
 	<section class="resources-intro">
 		<?php
 			the_content();
 		?>
 	</section>
 
-	<?php
-
+	<section class="easy-resources-page-section-wrap" >
+		<?php
 		// Get list of 'erp_resource' taxonomy terms eg 'strategic-plan', 'consent-form'.
 		$the_terms = get_terms(
 			array(
@@ -30,7 +31,6 @@ if ( ! taxonomy_exists( 'erp_resource' ) ) {
 				'orderby'    => 'name',
 			)
 		);
-		echo '<section class="easy-resources-page-section-wrap" >';
 
 		if ( ! is_array( $the_terms ) || empty( $the_terms ) || is_wp_error( $the_terms ) ) {
 			return;
@@ -68,17 +68,21 @@ if ( ! taxonomy_exists( 'erp_resource' ) ) {
 						aria-expanded="false"
 						aria-controls="<?php echo esc_attr($the_term->slug ); ?>"
 						>
-						<span class="easy-resources-page-term-title"><?php echo esc_html( $the_term->name ); ?></span>
-						<span class="easy-resources-page-term-description"><?php echo esc_html( $the_term->description ); ?></span>
+							<span class="easy-resources-page-term-title"><?php echo esc_html( $the_term->name ); ?></span>
+							<span class="easy-resources-page-term-description"><?php echo esc_html( $the_term->description ); ?></span>
+							<span class="easy-resources-page-chevron-down" aria-hidden="true">
+			
+								<?php 	echo \EasyResourcesPage\Base\IconController::get_svg_by_icon_name( 'chevron-down' );?>
+							</span>
 						</button>
 					</h2>
 			
 					<div 
 					style="<?php echo \EasyResourcesPage\Base\TemplateController::get_css( 'erp-dropdown-background', 'background'); ?> "
-						class="easy-resources-page-panel" 
-						id="<?php echo esc_attr( $the_term->slug ); ?>" 
-						role="region"
-						aria-labeledby="toggle-<?php echo esc_attr( $the_term->slug ); ?>"
+					class="easy-resources-page-panel" 
+					id="<?php echo esc_attr( $the_term->slug ); ?>" 
+					role="region"
+					aria-labeledby="toggle-<?php echo esc_attr( $the_term->slug ); ?>"
 					>
 
 						<?php
@@ -105,15 +109,13 @@ if ( ! taxonomy_exists( 'erp_resource' ) ) {
 					</div><!-- .easy-resources-page-panel-->
 
 				</div><!-- .easy-resources-page-item-->
-
 				<?php
-
 			endif;
 
 		} // foreach.
 
-		echo '</section>';
-
+		
 		?>
+		</section>
 		</div><!-- easy-resources-page-content-wrap -->
 <?php get_footer(); ?>
