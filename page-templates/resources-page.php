@@ -5,12 +5,17 @@
  * @package easy-resources-page
  */
 
+// TODO Test with a block theme!!! Think things will go bad if get_header() is called on a block theme. There's also a check in the main plugin file so this should ~never happen.
+if ( true === wp_is_block_theme() ) {
+	exit;
+}
 get_header();
 
 // Exit if the 'erp_resource' taxonomy does not exist.
 if ( ! taxonomy_exists( 'erp_resource' ) ) {
 	exit;
 }
+
 
 ?>
 <div class="easy-resources-page-content-wrap">

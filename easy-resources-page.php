@@ -15,6 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die; // Exit if accessed directly.
 }
 
+if ( true === wp_is_block_theme() ) {
+	return;
+}
+
 if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
 	include_once dirname( __FILE__ ) . '/vendor/autoload.php';
 }
